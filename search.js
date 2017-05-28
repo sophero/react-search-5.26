@@ -8,26 +8,50 @@ class Search extends React.Component {
         this.state = {
             resultsArray: []
         }
-        this.searchTitles = this.searchTitles.bind(this);
+        this.runSearch = this.runSearch.bind(this);
+        this.searchTitle = this.searchTitle.bind(this);
     }
 
     render() {
 
         return(
             <div>
-                <input onChange={this.searchTitles} className='search-input' type="text" placeholder="Type here to search" />
+                <div className="search-title">
+                    Title: <input className='search-title__input' type="text" placeholder="Enter title" />
+                </div>
+                <div className="search-year">
+                    Released before: <input className='search-year__input' type="text" placeholder="Enter year to filter" />
+                </div>
+                <button onClick={this.runSearch}>Search</button>
                 <DisplayResults results={this.state.resultsArray} />
             </div>
         )
 
     }
 
-    searchTitles() {
-        let strToSearch = document.getElementsByClassName('search-input')[0].value.toLowerCase();
+    runSearch() {
+        let filteredArray = this.searchYear(this.searchTitle());
+        this.setState({resultsArray: filteredArray});
+    }
+
+    searchTitle() {
+        let strToSearch = document.getElementsByClassName('search-title__input')[0].value.toLowerCase();
         let filteredArray = this.arrayToSearch.filter(function(obj) {
             return obj.title.toLowerCase().includes(strToSearch);
         });
-        this.setState({resultsArray: filteredArray});
+        return filteredArray;
+    }
+
+    searchYear(arrayToSearch) {
+        let yearInput = document.getElementsByClassName('search-year__input')[0].value;
+        if (yearInput === "") {
+            return arrayToSearch;
+        }
+        let latestYear = parseInt(yearInput);
+        let filteredArray = arrayToSearch.filter(function(obj) {
+            return obj.year <= latestYear;
+        });
+        return filteredArray;
     }
 
 }

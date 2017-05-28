@@ -2,15 +2,13 @@ class DisplayResults extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            resultsArray: props.results
-        }
+        this.results = props.results
     }
 
     render() {
 
-        let results = this.state.resultsArray.map(function(obj, index) {
-            return <div key={index}>{obj.title}</div>
+        let results = this.results.map(function(obj, index) {
+            return <div key={index}>{obj.title} ({obj.year})</div>
         });
 
         return(
@@ -21,6 +19,6 @@ class DisplayResults extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.setState({resultsArray: newProps.results});
+        this.results = newProps.results;
     }
 }
