@@ -1,3 +1,5 @@
+// extend this to the general so you can use it to search through dynamically chosen properties of json objects like the ones you receive as responses from APIs.... eg. the google books api, be able to quickly filter through their volumeInfo.title etc.
+
 class Search extends React.Component {
 
     constructor(props) {
@@ -6,22 +8,15 @@ class Search extends React.Component {
         this.state = {
             resultsArray: []
         }
-
         this.searchTitles = this.searchTitles.bind(this);
     }
 
     render() {
 
-        let results = this.state.resultsArray.map(function(obj, index) {
-            return <div key={index}>{obj.title}</div>
-        });
-
         return(
             <div>
                 <input onChange={this.searchTitles} className='search-input' type="text" placeholder="Type here to search" />
-                <div className="search-results">
-                    {results}
-                </div>
+                <DisplayResults results={this.state.resultsArray} />
             </div>
         )
 
@@ -32,7 +27,6 @@ class Search extends React.Component {
         let filteredArray = this.arrayToSearch.filter(function(obj) {
             return obj.title.toLowerCase().includes(strToSearch);
         });
-        console.log(filteredArray);
         this.setState({resultsArray: filteredArray});
     }
 
